@@ -38,6 +38,8 @@ class App extends React.Component {
         switch(typeSortBy) {
           case 'alphabetically':
             return a.localeCompare(b);
+          case 'length':
+            return a.length - b.length;
           default:
             return 0;
         }

@@ -8,8 +8,7 @@ import goodsFromServer from './api/Goods'
 class App extends React.Component {
   state = {
     goods: [],
-    sortderGoods: [],
-    filteredGoods: [],
+    resultList: [],
     clickedButton: false,
     direction: 1,
     selectedValue: 1,
@@ -19,8 +18,7 @@ class App extends React.Component {
     this.setState({
       clickedButton: true,
       goods: goodsFromServer,
-      sortderGoods: goodsFromServer,
-      filteredGoods: goodsFromServer,
+      resultList: goodsFromServer,
     })
   }
 
@@ -28,26 +26,27 @@ class App extends React.Component {
     const {value} = event.target;
     this.setState(state => ({
       selectedValue: value,
-      filteredGoods: [...state.sortderGoods].filter(goodsItem => goodsItem.length >= value),
+      resultList: [...state.goods].filter(goodsItem => goodsItem.length >= value),
     }))
   }
 
   resetFunc = () => {
     this.setState(state => ({
-      sortderGoods: [...state.goods],
+      resultList: [...state.goods],
+      selectedValue: 1,
     }))
   }
 
   reverseFunc = () => {
     this.setState(state => ({
-      sortderGoods: [...state.sortderGoods].reverse(),
+      resultList: [...state.resultList].reverse(),
     }))
   }
 
   sortFunc = (typeSortBy) => {
     this.setState(state => ({
       direction: state.direction === 1 ? -1 : 1,
-      sortderGoods: [...state.sortderGoods].sort((a, b) => {
+      resultList: [...state.resultList].sort((a, b) => {
         switch(typeSortBy) {
           case 'alphabetically':
             return a.localeCompare(b) * state.direction;
@@ -61,6 +60,7 @@ class App extends React.Component {
   }
 
   render() {
+    // const { selectedValue, sortderGoods } = this.state;
     return (
       <div className="App">
         <h1>Lists of goods</h1>
@@ -69,11 +69,10 @@ class App extends React.Component {
             ? <GoodsList 
                 selectedValue={this.state.selectedValue}
                 filterByLength={this.filterByLength}
-                filtered={this.state.filteredGoods}
+                resultList={this.state.resultList}
                 resetFunc={this.resetFunc}
                 sortFunc={this.sortFunc}
                 reverseFunc={this.reverseFunc}
-                goods={this.state.sortderGoods} 
               />
             : <Start showData={this.showData} />
         }

@@ -2,7 +2,7 @@ import React from 'react'
 import GoodsItem from './GoodsItem'
 
 
-const GoodsList = ({goods, reverseFunc, sortFunc, resetFunc, filterByLength, selectedValue, filtered}) => (
+const GoodsList = ({ reverseFunc, sortFunc, resetFunc, filterByLength, selectedValue, resultList}) => (
   <div>
     <div>
       <button onClick={resetFunc}>Reset</button>
@@ -14,8 +14,12 @@ const GoodsList = ({goods, reverseFunc, sortFunc, resetFunc, filterByLength, sel
     </div> <br />
     <form action="">
       Filter by length
-      <select value={selectedValue} onChange={filterByLength} name="Filter by length" id="">
-        <option value="1">1</option>  
+      <select 
+        value={selectedValue}
+        onChange={filterByLength}
+        name="Filter by length"
+      >
+        <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
@@ -29,7 +33,7 @@ const GoodsList = ({goods, reverseFunc, sortFunc, resetFunc, filterByLength, sel
     </form>
     <ul>
       {
-        filtered.map(goodsItem => (
+        resultList.map(goodsItem => (
           <GoodsItem currentItem={goodsItem}/>
         ))
       }

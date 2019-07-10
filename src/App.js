@@ -9,7 +9,10 @@ class App extends React.Component {
   state = {
     goods: [],
     sortderGoods: [],
+    filteredGoods: [],
     clickedButton: false,
+    direction: 1,
+    selectedValue: 1,
   }
 
   showData = () => {
@@ -17,7 +20,16 @@ class App extends React.Component {
       clickedButton: true,
       goods: goodsFromServer,
       sortderGoods: goodsFromServer,
+      filteredGoods: goodsFromServer,
     })
+  }
+
+  filterByLength = (event) => {
+    const {value} = event.target;
+    this.setState(state => ({
+      selectedValue: value,
+      filteredGoods: [...state.sortderGoods].filter(goodsItem => goodsItem.length >= value),
+    }))
   }
 
   resetFunc = () => {
@@ -34,12 +46,13 @@ class App extends React.Component {
 
   sortFunc = (typeSortBy) => {
     this.setState(state => ({
+      direction: state.direction === 1 ? -1 : 1,
       sortderGoods: [...state.sortderGoods].sort((a, b) => {
         switch(typeSortBy) {
           case 'alphabetically':
-            return a.localeCompare(b);
+            return a.localeCompare(b) * state.direction;
           case 'length':
-            return a.length - b.length;
+            return (a.length - b.length) * state.direction;
           default:
             return 0;
         }
@@ -54,6 +67,9 @@ class App extends React.Component {
         {
           this.state.clickedButton
             ? <GoodsList 
+                selectedValue={this.state.selectedValue}
+                filterByLength={this.filterByLength}
+                filtered={this.state.filteredGoods}
                 resetFunc={this.resetFunc}
                 sortFunc={this.sortFunc}
                 reverseFunc={this.reverseFunc}

@@ -12,28 +12,37 @@ class App extends React.Component {
     clickedButton: false,
   }
 
-  reverseFunc = () => {
-    this.setState(state => ({
-      sortderGoods: [...state.sortderGoods].reverse(),
-    }))
-  }
-
-  // sortFunc = () => {
-  //   this.setState(state => {
-  //     sortderGoods: [...state.goods].sort((a, b) => {
-  //       switch(typeSortBy) {
-          
-  //       }
-  //     })
-  //   })
-  // }
-
   showData = () => {
     this.setState({
       clickedButton: true,
       goods: goodsFromServer,
       sortderGoods: goodsFromServer,
     })
+  }
+
+  resetFunc = () => {
+    this.setState(state => ({
+      sortderGoods: [...state.goods],
+    }))
+  }
+
+  reverseFunc = () => {
+    this.setState(state => ({
+      sortderGoods: [...state.sortderGoods].reverse(),
+    }))
+  }
+
+  sortFunc = (typeSortBy) => {
+    this.setState(state => ({
+      sortderGoods: [...state.sortderGoods].sort((a, b) => {
+        switch(typeSortBy) {
+          case 'alphabetically':
+            return a.localeCompare(b);
+          default:
+            return 0;
+        }
+      }),
+    }))
   }
 
   render() {
@@ -43,6 +52,8 @@ class App extends React.Component {
         {
           this.state.clickedButton
             ? <GoodsList 
+                resetFunc={this.resetFunc}
+                sortFunc={this.sortFunc}
                 reverseFunc={this.reverseFunc}
                 goods={this.state.sortderGoods} 
               />

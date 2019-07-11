@@ -14,7 +14,7 @@ class App extends React.Component {
     selectedValue: 1,
   }
 
-  showData = () => {
+  showData = () => { //or LoadButton in different tasks
     this.setState({
       clickedButton: true,
       goods: goodsFromServer,
@@ -24,34 +24,34 @@ class App extends React.Component {
 
   filterByLength = (event) => {
     const {value} = event.target;
-    this.setState(state => ({
+    this.setState(prevState => ({
       selectedValue: value,
-      resultList: [...state.goods].filter(goodsItem => goodsItem.length >= value),
+      resultList: [...prevState.goods].filter(goodsItem => goodsItem.length >= value),
     }))
   }
 
   resetFunc = () => {
-    this.setState(state => ({
-      resultList: [...state.goods],
+    this.setState(prevState => ({
+      resultList: [...prevState.goods],
       selectedValue: 1,
     }))
   }
 
   reverseFunc = () => {
-    this.setState(state => ({
-      resultList: [...state.resultList].reverse(),
+    this.setState(prevState => ({
+      resultList: [...prevState.resultList].reverse(),
     }))
   }
 
   sortFunc = (typeSortBy) => {
-    this.setState(state => ({
-      direction: state.direction === 1 ? -1 : 1,
-      resultList: [...state.resultList].sort((a, b) => {
+    this.setState(prevState => ({
+      direction: prevState.direction === 1 ? -1 : 1,
+      resultList: [...prevState.resultList].sort((a, b) => {
         switch(typeSortBy) {
           case 'alphabetically':
-            return a.localeCompare(b) * state.direction;
+            return a.localeCompare(b) * prevState.direction;
           case 'length':
-            return (a.length - b.length) * state.direction;
+            return (a.length - b.length) * prevState.direction;
           default:
             return 0;
         }
